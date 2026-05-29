@@ -1,6 +1,6 @@
 package com.ecommerce.controller;
 
-import com.ecommerce.Dao.UserDAO;
+import com.ecommerce.dao.UserDAO;
 import com.ecommerce.model.User;
 import java.io.IOException;
 import javax.servlet.ServletException;

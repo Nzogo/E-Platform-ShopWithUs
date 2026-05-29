@@ -298,7 +298,7 @@
             background: white;
         }
 
-        /* Form Groups with Fixed Password Toggle */
+        /* Form Groups */
         .form-group {
             margin-bottom: 20px;
             position: relative;
@@ -337,7 +337,26 @@
             color: #764ba2;
         }
 
-        /* Password Toggle Button - Properly Positioned */
+        /* Currency Selector - Compact */
+        .currency-selector {
+            width: 100%;
+            padding: 12px 15px 12px 42px;
+            border: 2px solid #e0e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            background: #f8fafc;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .currency-selector:focus {
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Password Toggle Button */
         .password-toggle {
             position: absolute;
             right: 15px;
@@ -496,6 +515,13 @@
             to { transform: rotate(360deg); }
         }
 
+        .optional-text {
+            font-size: 11px;
+            color: #999;
+            text-align: right;
+            margin-top: 5px;
+        }
+
         /* Responsive */
         @media (max-width: 600px) {
             .card-header { padding: 30px 25px; }
@@ -561,6 +587,28 @@
                     </div>
                 <% } %>
 
+                <!-- Currency Selector - Optional, Compact -->
+                <div class="form-group">
+                    <i class="fas fa-money-bill-wave input-icon"></i>
+                    <select name="currency" id="currencySelect" class="currency-selector">
+                        <option value="CNY" selected>🇨🇳 Chinese Yuan (CNY) - Default</option>
+                        <option value="XAF">🇨🇲 CFA Franc (XAF)</option>
+                        <option value="USD">🇺🇸 US Dollar (USD)</option>
+                        <option value="GBP">🇬🇧 British Pound (GBP)</option>
+                        <option value="EUR">🇪🇺 Euro (EUR)</option>
+                        <option value="NGN">🇳🇬 Nigerian Naira (NGN)</option>
+                        <option value="JPY">🇯🇵 Japanese Yen (JPY)</option>
+                        <option value="INR">🇮🇳 Indian Rupee (INR)</option>
+                        <option value="CAD">🇨🇦 Canadian Dollar (CAD)</option>
+                        <option value="AUD">🇦🇺 Australian Dollar (AUD)</option>
+                        <option value="BRL">🇧🇷 Brazilian Real (BRL)</option>
+                        <option value="ZAR">🇿🇦 South African Rand (ZAR)</option>
+                        <option value="KES">🇰🇪 Kenyan Shilling (KES)</option>
+                        <option value="GHS">🇬🇭 Ghanaian Cedi (GHS)</option>
+                    </select>
+                </div>
+                <div class="optional-text">Optional - Your preferred currency</div>
+
                 <form action="${pageContext.request.contextPath}/login" method="post" id="loginForm">
                     <div class="form-group">
                         <i class="fas fa-envelope input-icon"></i>
@@ -598,20 +646,20 @@
     <script>
         // Generate Bubbles
         function createBubbles() {
-            const container = document.querySelector('.animated-bg');
-            const bubbleCount = 40;
+            var container = document.querySelector('.animated-bg');
+            var bubbleCount = 40;
 
-            for (let i = 0; i < bubbleCount; i++) {
-                const bubble = document.createElement('div');
+            for (var i = 0; i < bubbleCount; i++) {
+                var bubble = document.createElement('div');
                 bubble.className = 'bubble';
 
-                const size = Math.random() * 80 + 15;
+                var size = Math.random() * 80 + 15;
                 bubble.style.width = size + 'px';
                 bubble.style.height = size + 'px';
 
                 bubble.style.left = Math.random() * 100 + '%';
 
-                const duration = Math.random() * 12 + 10;
+                var duration = Math.random() * 12 + 10;
                 bubble.style.animationDuration = duration + 's';
 
                 bubble.style.animationDelay = Math.random() * 15 + 's';
@@ -622,34 +670,54 @@
 
         createBubbles();
 
-        // Password Toggle Functionality - FIXED
-        const togglePassword = document.getElementById('togglePassword');
-        const passwordInput = document.getElementById('password');
+        // Save currency preference to localStorage
+        var currencySelect = document.getElementById('currencySelect');
+        if (currencySelect) {
+            // Load saved currency
+            var savedCurrency = localStorage.getItem('preferredCurrency');
+            if (savedCurrency) {
+                currencySelect.value = savedCurrency;
+            }
 
-        togglePassword.addEventListener('click', function() {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            this.querySelector('i').classList.toggle('fa-eye');
-            this.querySelector('i').classList.toggle('fa-eye-slash');
-        });
+            // Save currency when changed
+            currencySelect.addEventListener('change', function() {
+                localStorage.setItem('preferredCurrency', this.value);
+            });
+        }
+
+        // Password Toggle Functionality
+        var togglePassword = document.getElementById('togglePassword');
+        var passwordInput = document.getElementById('password');
+
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', function() {
+                var type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.querySelector('i').classList.toggle('fa-eye');
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+            });
+        }
 
         // Form submission loading effect
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            const btn = document.getElementById('loginBtn');
-            btn.innerHTML = '<span class="loading-spinner"></span> Signing in...';
-            btn.disabled = true;
-        });
+        var loginForm = document.getElementById('loginForm');
+        if (loginForm) {
+            loginForm.addEventListener('submit', function(e) {
+                var btn = document.getElementById('loginBtn');
+                btn.innerHTML = '<span class="loading-spinner"></span> Signing in...';
+                btn.disabled = true;
+            });
+        }
 
         // Input focus animations
-        const inputs = document.querySelectorAll('.form-group input');
-        inputs.forEach(input => {
-            input.addEventListener('focus', function() {
+        var inputs = document.querySelectorAll('.form-group input');
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].addEventListener('focus', function() {
                 this.parentElement.style.transform = 'translateX(3px)';
             });
-            input.addEventListener('blur', function() {
+            inputs[i].addEventListener('blur', function() {
                 this.parentElement.style.transform = 'translateX(0)';
             });
-        });
+        }
     </script>
 </body>
 </html>
