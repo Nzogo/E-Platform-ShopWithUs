@@ -606,7 +606,7 @@
                 </form>
 
                 <div class="login-link">
-                    Already have an account? <a href="login.jsp">Sign in here <i class="fas fa-arrow-right"></i></a>
+                    Already have an account? <a href="${pageContext.request.contextPath}/user/login.jsp">Sign in here <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>

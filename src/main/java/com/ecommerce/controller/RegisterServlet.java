@@ -1,6 +1,6 @@
 package com.ecommerce.controller;
 
-import com.ecommerce.dao.UserDAO;
+import com.ecommerce.Dao.UserDAO;
 import com.ecommerce.model.User;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -30,25 +30,25 @@ public class RegisterServlet extends HttpServlet {
         // Validation
         if (fullname == null || fullname.trim().isEmpty()) {
             request.setAttribute("error", "Full name is required");
-            request.getRequestDispatcher("user/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/user/register.jsp").forward(request, response);
             return;
         }
 
         if (email == null || !email.contains("@")) {
             request.setAttribute("error", "Valid email is required");
-            request.getRequestDispatcher("user/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/user/register.jsp").forward(request, response);
             return;
         }
 
         if (password == null || password.length() < 4) {
             request.setAttribute("error", "Password must be at least 4 characters");
-            request.getRequestDispatcher("user/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/user/register.jsp").forward(request, response);
             return;
         }
 
         if (!password.equals(confirmPassword)) {
             request.setAttribute("error", "Passwords do not match");
-            request.getRequestDispatcher("user/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/user/register.jsp").forward(request, response);
             return;
         }
 
@@ -60,7 +60,7 @@ public class RegisterServlet extends HttpServlet {
         // Check if email exists
         if (userDAO.emailExists(email)) {
             request.setAttribute("error", "Email already registered. Please login.");
-            request.getRequestDispatcher("user/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/user/register.jsp").forward(request, response);
             return;
         }
 
@@ -76,10 +76,10 @@ public class RegisterServlet extends HttpServlet {
         if (userDAO.registerUser(user)) {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
-            response.sendRedirect("dashboard.jsp");
+            response.sendRedirect(request.getContextPath() + "/user/dashboard.jsp");
         } else {
             request.setAttribute("error", "Registration failed. Please try again.");
-            request.getRequestDispatcher("user/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/user/register.jsp").forward(request, response);
         }
     }
 }

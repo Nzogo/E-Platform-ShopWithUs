@@ -1,6 +1,6 @@
 package com.ecommerce.controller;
 
-import com.ecommerce.dao.UserDAO;
+import com.ecommerce.Dao.UserDAO;
 import com.ecommerce.model.User;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -24,13 +24,13 @@ public class LoginServlet extends HttpServlet {
 
         if (email == null || email.trim().isEmpty()) {
             request.setAttribute("error", "Email is required");
-            request.getRequestDispatcher("user/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/user/login.jsp").forward(request, response);
             return;
         }
 
         if (password == null || password.trim().isEmpty()) {
             request.setAttribute("error", "Password is required");
-            request.getRequestDispatcher("user/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/user/login.jsp").forward(request, response);
             return;
         }
 
@@ -39,10 +39,10 @@ public class LoginServlet extends HttpServlet {
         if (user != null) {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
-            response.sendRedirect("dashboard.jsp");
+            response.sendRedirect(request.getContextPath() + "/user/dashboard.jsp");
         } else {
             request.setAttribute("error", "Invalid email or password");
-            request.getRequestDispatcher("user/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/user/login.jsp").forward(request, response);
         }
     }
 
@@ -56,7 +56,7 @@ public class LoginServlet extends HttpServlet {
             if (session != null) {
                 session.invalidate();
             }
-            response.sendRedirect("../index.jsp");
+            response.sendRedirect(request.getContextPath() + "/index.jsp");
         }
     }
 }

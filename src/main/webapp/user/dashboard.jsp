@@ -3,7 +3,7 @@
 <%
     User user = (User) session.getAttribute("user");
     if (user == null) {
-        response.sendRedirect("login.jsp");
+        response.sendRedirect(request.getContextPath() + "/user/login.jsp");
         return;
     }
     String displayName = user.getNickname() != null && !user.getNickname().trim().isEmpty()
@@ -27,10 +27,9 @@
         }
 
         body {
-            background: #f5f5f5;
+            background: #f0f2f5;
         }
 
-        /* Top Bar - Shein Style */
         .top-bar {
             background: #0b4f3c;
             color: white;
@@ -43,10 +42,9 @@
             z-index: 1001;
         }
 
-        /* Navbar */
         .navbar {
             background: white;
-            padding: 12px 50px;
+            padding: 12px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -63,6 +61,7 @@
             font-weight: 800;
             color: #0b4f3c;
             text-decoration: none;
+            cursor: pointer;
         }
 
         .search-bar {
@@ -104,6 +103,7 @@
             text-decoration: none;
             font-size: 18px;
             position: relative;
+            cursor: pointer;
         }
 
         .nav-icons a:hover {
@@ -123,7 +123,7 @@
 
         .logout-btn {
             background: #dc2626;
-            color: white;
+            color: white !important;
             padding: 6px 15px;
             border-radius: 20px;
             font-size: 14px;
@@ -131,13 +131,11 @@
 
         .logout-btn:hover {
             background: #b91c1c;
-            color: white;
         }
 
-        /* Category Bar - Alibaba Style */
         .category-bar {
             background: white;
-            padding: 10px 50px;
+            padding: 10px 40px;
             border-bottom: 1px solid #eee;
             position: fixed;
             top: 88px;
@@ -149,24 +147,23 @@
 
         .category-bar a {
             display: inline-block;
-            padding: 5px 18px;
+            padding: 5px 20px;
             color: #666;
             text-decoration: none;
             font-size: 13px;
             font-weight: 500;
+            cursor: pointer;
         }
 
         .category-bar a:hover {
             color: #0b4f3c;
         }
 
-        /* Main Container */
         .container {
-            margin-top: 140px;
-            padding: 20px 50px;
+            margin-top: 145px;
+            padding: 20px 40px;
         }
 
-        /* Hero Banner - Shein Style */
         .hero-banner {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 20px;
@@ -177,6 +174,7 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            gap: 20px;
         }
 
         .hero-text h2 {
@@ -201,12 +199,13 @@
             font-weight: 800;
         }
 
-        /* Flash Sale Section */
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .section-header h3 {
@@ -217,15 +216,15 @@
         .timer {
             background: #ff6b6b;
             color: white;
-            padding: 5px 15px;
+            padding: 5px 20px;
             border-radius: 25px;
             font-size: 13px;
+            font-weight: 600;
         }
 
-        /* Product Grid */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 40px;
         }
@@ -234,14 +233,14 @@
             background: white;
             border-radius: 12px;
             overflow: hidden;
-            transition: transform 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
             position: relative;
         }
 
         .product-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
 
         .product-badge {
@@ -253,17 +252,22 @@
             padding: 2px 8px;
             border-radius: 15px;
             font-size: 10px;
+            font-weight: 600;
             z-index: 1;
+        }
+
+        .product-badge.hot {
+            background: #ff9800;
         }
 
         .product-image {
             width: 100%;
-            height: 180px;
+            height: 200px;
             object-fit: cover;
         }
 
         .product-info {
-            padding: 10px;
+            padding: 12px;
         }
 
         .product-title {
@@ -271,12 +275,16 @@
             font-weight: 600;
             margin-bottom: 5px;
             color: #333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .product-price {
             display: flex;
             gap: 8px;
             align-items: center;
+            margin-bottom: 8px;
         }
 
         .current-price {
@@ -291,6 +299,12 @@
             text-decoration: line-through;
         }
 
+        .product-rating {
+            font-size: 11px;
+            color: #ffc107;
+            margin-bottom: 8px;
+        }
+
         .add-to-cart {
             width: 100%;
             padding: 8px;
@@ -298,37 +312,56 @@
             color: white;
             border: none;
             border-radius: 8px;
-            margin-top: 8px;
             cursor: pointer;
             font-size: 12px;
+            font-weight: 600;
         }
 
-        /* Features Section - Alibaba Style */
+        .add-to-cart:hover {
+            background: #0a3d2e;
+        }
+
         .features-section {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             margin: 40px 0;
-            text-align: center;
         }
 
         .feature-item {
             background: white;
             padding: 20px;
             border-radius: 12px;
+            text-align: center;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-3px);
         }
 
         .feature-icon {
-            font-size: 30px;
+            font-size: 32px;
             margin-bottom: 10px;
         }
 
         .feature-title {
             font-weight: 600;
             font-size: 14px;
+            margin-bottom: 5px;
         }
 
-        /* Footer */
+        .feature-desc {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .recommended-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 30px 0 20px;
+            color: #333;
+        }
+
         .footer {
             background: #1a1a2e;
             color: white;
@@ -355,6 +388,7 @@
             text-decoration: none;
             font-size: 12px;
             margin-bottom: 8px;
+            cursor: pointer;
         }
 
         .footer-section a:hover {
@@ -370,7 +404,14 @@
             color: #aaa;
         }
 
-        /* Responsive */
+        .payment-methods {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            font-size: 24px;
+        }
+
         @media (max-width: 768px) {
             .navbar {
                 padding: 10px 20px;
@@ -383,7 +424,7 @@
             }
             .container {
                 padding: 20px;
-                margin-top: 180px;
+                margin-top: 195px;
             }
             .features-section {
                 grid-template-columns: repeat(2, 1fr);
@@ -392,18 +433,19 @@
                 grid-template-columns: 1fr;
                 text-align: center;
             }
+            .hero-text h2 {
+                font-size: 22px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Top Bar -->
     <div class="top-bar">
-        🚚 Free Shipping on orders $50+ | Free Returns | 24/7 Customer Support
+        🚚 Free Shipping on orders $50+ | Free Returns | 24/7 Customer Support | Secure Payments
     </div>
 
-    <!-- Navbar -->
     <div class="navbar">
-        <a href="#" class="logo">🛍️ ShopWithUs!</a>
+        <div class="logo" onclick="location.reload()">🛍️ ShopWithUs!</div>
 
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Search products...">
@@ -411,35 +453,32 @@
         </div>
 
         <div class="nav-icons">
-            <a href="#"><i class="far fa-heart"></i></a>
-            <a href="#" style="position: relative;">
+            <a onclick="showNotification('Wishlist coming soon!', 'info')"><i class="far fa-heart"></i></a>
+            <a onclick="viewCart()" style="position: relative;">
                 <i class="fas fa-shopping-cart"></i>
-                <span class="cart-count">0</span>
+                <span class="cart-count" id="cartCount">0</span>
             </a>
             <a href="${pageContext.request.contextPath}/login?action=logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
     </div>
 
-    <!-- Category Bar -->
     <div class="category-bar">
-        <a href="#">All</a>
-        <a href="#">Women</a>
-        <a href="#">Men</a>
-        <a href="#">Shoes</a>
-        <a href="#">Bags</a>
-        <a href="#">Beauty</a>
-        <a href="#">Electronics</a>
-        <a href="#">Home</a>
-        <a href="#">Kids</a>
-        <a href="#">Sports</a>
+        <a onclick="filterCategory('all')">All</a>
+        <a onclick="filterCategory('women')">Women</a>
+        <a onclick="filterCategory('men')">Men</a>
+        <a onclick="filterCategory('shoes')">Shoes</a>
+        <a onclick="filterCategory('bags')">Bags</a>
+        <a onclick="filterCategory('beauty')">Beauty</a>
+        <a onclick="filterCategory('electronics')">Electronics</a>
+        <a onclick="filterCategory('home')">Home</a>
+        <a onclick="filterCategory('kids')">Kids</a>
+        <a onclick="filterCategory('sports')">Sports</a>
     </div>
 
-    <!-- Main Container -->
     <div class="container">
-        <!-- Hero Banner -->
         <div class="hero-banner">
             <div class="hero-text">
-                <h2>Welcome back, @<%= displayName %>!</h2>
+                <h2>Welcome back, @<%= displayName %>! 👋</h2>
                 <p>Discover amazing deals and exclusive offers just for you</p>
             </div>
             <div class="offer-badge">
@@ -449,195 +488,276 @@
             </div>
         </div>
 
-        <!-- Flash Sale -->
         <div class="section-header">
-            <h3>⚡ Flash Sale</h3>
+            <h3>⚡ Flash Sale <span style="font-size:12px; color:#666;">Ends soon!</span></h3>
             <div class="timer" id="timer">Ending in: 23:59:59</div>
         </div>
 
-        <!-- Products Grid -->
         <div class="products-grid" id="productsGrid">
             <!-- Product 1 -->
-            <div class="product-card">
+            <div class="product-card" onclick="viewProduct(1)">
                 <div class="product-badge">-40%</div>
-                <img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446" class="product-image">
+                <img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446" class="product-image" onerror="this.src='https://via.placeholder.com/200x200'">
                 <div class="product-info">
                     <div class="product-title">Floral Summer Dress</div>
                     <div class="product-price">
                         <span class="current-price">$29.99</span>
                         <span class="old-price">$49.99</span>
                     </div>
-                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="product-rating">★★★★☆ (128)</div>
+                    <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(1, 'Floral Summer Dress', 29.99)">Add to Cart</button>
                 </div>
             </div>
 
-            <!-- Product 2 -->
-            <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff" class="product-image">
+            <div class="product-card" onclick="viewProduct(2)">
+                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff" class="product-image" onerror="this.src='https://via.placeholder.com/200x200'">
                 <div class="product-info">
-                    <div class="product-title">Running Shoes</div>
+                    <div class="product-title">Nike Running Shoes</div>
                     <div class="product-price">
                         <span class="current-price">$89.99</span>
                     </div>
-                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="product-rating">★★★★★ (342)</div>
+                    <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(2, 'Nike Running Shoes', 89.99)">Add to Cart</button>
                 </div>
             </div>
 
-            <!-- Product 3 -->
-            <div class="product-card">
-                <div class="product-badge">Sale</div>
-                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30" class="product-image">
+            <div class="product-card" onclick="viewProduct(3)">
+                <div class="product-badge hot">Hot</div>
+                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30" class="product-image" onerror="this.src='https://via.placeholder.com/200x200'">
                 <div class="product-info">
-                    <div class="product-title">Smart Watch</div>
+                    <div class="product-title">Smart Watch Series 8</div>
                     <div class="product-price">
                         <span class="current-price">$149.99</span>
                         <span class="old-price">$199.99</span>
                     </div>
-                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="product-rating">★★★★☆ (567)</div>
+                    <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(3, 'Smart Watch', 149.99)">Add to Cart</button>
                 </div>
             </div>
 
-            <!-- Product 4 -->
-            <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" class="product-image">
+            <div class="product-card" onclick="viewProduct(4)">
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" class="product-image" onerror="this.src='https://via.placeholder.com/200x200'">
                 <div class="product-info">
                     <div class="product-title">Wireless Headphones</div>
                     <div class="product-price">
                         <span class="current-price">$99.99</span>
+                        <span class="old-price">$149.99</span>
                     </div>
-                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="product-rating">★★★★☆ (892)</div>
+                    <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(4, 'Wireless Headphones', 99.99)">Add to Cart</button>
                 </div>
             </div>
 
-            <!-- Product 5 -->
-            <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3" class="product-image">
+            <div class="product-card" onclick="viewProduct(5)">
+                <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3" class="product-image" onerror="this.src='https://via.placeholder.com/200x200'">
                 <div class="product-info">
-                    <div class="product-title">Leather Handbag</div>
+                    <div class="product-title">Designer Handbag</div>
                     <div class="product-price">
                         <span class="current-price">$69.99</span>
                         <span class="old-price">$89.99</span>
                     </div>
-                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="product-rating">★★★★☆ (234)</div>
+                    <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(5, 'Designer Handbag', 69.99)">Add to Cart</button>
                 </div>
             </div>
 
-            <!-- Product 6 -->
-            <div class="product-card">
+            <div class="product-card" onclick="viewProduct(6)">
                 <div class="product-badge">New</div>
-                <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348" class="product-image">
+                <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348" class="product-image" onerror="this.src='https://via.placeholder.com/200x200'">
                 <div class="product-info">
-                    <div class="product-title">Makeup Kit</div>
+                    <div class="product-title">Premium Makeup Kit</div>
                     <div class="product-price">
                         <span class="current-price">$39.99</span>
                     </div>
-                    <button class="add-to-cart">Add to Cart</button>
+                    <div class="product-rating">★★★★☆ (456)</div>
+                    <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(6, 'Premium Makeup Kit', 39.99)">Add to Cart</button>
                 </div>
             </div>
         </div>
 
-        <!-- Features Section -->
         <div class="features-section">
             <div class="feature-item">
                 <div class="feature-icon">🚚</div>
                 <div class="feature-title">Free Shipping</div>
-                <small>On orders $50+</small>
+                <div class="feature-desc">On orders $50+</div>
             </div>
             <div class="feature-item">
                 <div class="feature-icon">🔒</div>
                 <div class="feature-title">Secure Payment</div>
-                <small>100% secure</small>
+                <div class="feature-desc">100% secure checkout</div>
             </div>
             <div class="feature-item">
                 <div class="feature-icon">↩️</div>
                 <div class="feature-title">Easy Returns</div>
-                <small>30 days return</small>
+                <div class="feature-desc">30 days return policy</div>
             </div>
             <div class="feature-item">
                 <div class="feature-icon">💬</div>
                 <div class="feature-title">24/7 Support</div>
-                <small>Live chat</small>
+                <div class="feature-desc">Live chat available</div>
             </div>
         </div>
+
+        <div class="recommended-title">✨ Recommended For You</div>
+        <div class="products-grid" id="recommendedGrid"></div>
     </div>
 
-    <!-- Footer -->
     <div class="footer">
         <div class="footer-grid">
             <div class="footer-section">
                 <h4>ShopWithUs</h4>
-                <a href="#">About Us</a>
-                <a href="#">Careers</a>
-                <a href="#">Press</a>
+                <a onclick="showNotification('About Us coming soon!', 'info')">About Us</a>
+                <a onclick="showNotification('Careers coming soon!', 'info')">Careers</a>
+                <a onclick="showNotification('Press coming soon!', 'info')">Press</a>
+                <a onclick="showNotification('Sustainability coming soon!', 'info')">Sustainability</a>
             </div>
             <div class="footer-section">
                 <h4>Customer Service</h4>
-                <a href="#">Contact Us</a>
-                <a href="#">Shipping Info</a>
-                <a href="#">Returns</a>
-                <a href="#">FAQs</a>
+                <a onclick="showNotification('Contact Us coming soon!', 'info')">Contact Us</a>
+                <a onclick="showNotification('Shipping Info coming soon!', 'info')">Shipping Info</a>
+                <a onclick="showNotification('Returns & Refunds coming soon!', 'info')">Returns & Refunds</a>
+                <a onclick="showNotification('FAQs coming soon!', 'info')">FAQs</a>
             </div>
             <div class="footer-section">
                 <h4>My Account</h4>
-                <a href="#">My Orders</a>
-                <a href="#">Wishlist</a>
-                <a href="#">Settings</a>
+                <a onclick="showNotification('My Orders coming soon!', 'info')">My Orders</a>
+                <a onclick="showNotification('Wishlist coming soon!', 'info')">Wishlist</a>
+                <a onclick="showNotification('Settings coming soon!', 'info')">Settings</a>
+                <a onclick="showNotification('Promotions coming soon!', 'info')">Promotions</a>
             </div>
             <div class="footer-section">
                 <h4>Follow Us</h4>
                 <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
                 <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
                 <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+                <a href="#"><i class="fab fa-pinterest"></i> Pinterest</a>
             </div>
         </div>
+        <div class="payment-methods">
+            <i class="fab fa-cc-visa"></i>
+            <i class="fab fa-cc-mastercard"></i>
+            <i class="fab fa-cc-amex"></i>
+            <i class="fab fa-cc-paypal"></i>
+            <i class="fab fa-alipay"></i>
+            <i class="fab fa-weixin"></i>
+        </div>
         <div class="copyright">
-            © 2024 ShopWithUs — All rights reserved.
+            © 2024 ShopWithUs — All rights reserved. Smarter Shopping Starts Here.
         </div>
     </div>
 
     <script>
-        // Timer for flash sale
-        function updateTimer() {
-            const now = new Date();
-            const endOfDay = new Date();
-            endOfDay.setHours(23, 59, 59, 999);
-            const diff = endOfDay - now;
+        var cart = [];
 
-            const hours = Math.floor(diff / 3600000);
-            const minutes = Math.floor((diff % 3600000) / 60000);
-            const seconds = Math.floor((diff % 60000) / 1000);
+        function loadCart() {
+            var savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                try {
+                    cart = JSON.parse(savedCart);
+                } catch(e) {
+                    cart = [];
+                }
+            }
+            updateCartCount();
+        }
 
-            const timerElement = document.getElementById('timer');
-            if (timerElement) {
-                timerElement.innerHTML = `Ending in: ${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+        function updateCartCount() {
+            var count = 0;
+            for (var i = 0; i < cart.length; i++) {
+                count += cart[i].quantity;
+            }
+            document.getElementById('cartCount').innerHTML = count;
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function addToCart(id, name, price) {
+            var found = false;
+            for (var i = 0; i < cart.length; i++) {
+                if (cart[i].id === id) {
+                    cart[i].quantity++;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                cart.push({ id: id, name: name, price: price, quantity: 1 });
+            }
+            updateCartCount();
+            showNotification(name + ' added to cart!', 'success');
+        }
+
+        function viewCart() {
+            if (cart.length === 0) {
+                showNotification('Your cart is empty', 'info');
+            } else {
+                var message = 'Cart Items:\n';
+                var total = 0;
+                for (var i = 0; i < cart.length; i++) {
+                    var item = cart[i];
+                    var itemTotal = item.price * item.quantity;
+                    message += item.name + ' x' + item.quantity + ' - $' + itemTotal.toFixed(2) + '\n';
+                    total += itemTotal;
+                }
+                message += '\nTotal: $' + total.toFixed(2);
+                alert(message);
             }
         }
 
+        function viewProduct(id) {
+            showNotification('Product details coming soon! Product ID: ' + id, 'info');
+        }
+
+        function filterCategory(category) {
+            showNotification('Showing ' + category + ' products', 'info');
+        }
+
+        function searchProducts() {
+            var searchTerm = document.getElementById('searchInput').value;
+            if (searchTerm) {
+                showNotification('Searching for: ' + searchTerm, 'info');
+            }
+        }
+
+        function updateTimer() {
+            var now = new Date();
+            var endOfDay = new Date();
+            endOfDay.setHours(23, 59, 59, 999);
+            var diff = endOfDay - now;
+
+            var hours = Math.floor(diff / 3600000);
+            var minutes = Math.floor((diff % 3600000) / 60000);
+            var seconds = Math.floor((diff % 60000) / 1000);
+
+            var hoursStr = (hours < 10) ? '0' + hours : '' + hours;
+            var minutesStr = (minutes < 10) ? '0' + minutes : '' + minutes;
+            var secondsStr = (seconds < 10) ? '0' + seconds : '' + seconds;
+
+            var timerElement = document.getElementById('timer');
+            if (timerElement) {
+                timerElement.innerHTML = '⏰ Ending in: ' + hoursStr + ':' + minutesStr + ':' + secondsStr;
+            }
+        }
+
+        function showNotification(message, type) {
+            var notification = document.createElement('div');
+            var bgColor = '#0b4f3c';
+            if (type === 'error') bgColor = '#dc2626';
+            else if (type === 'info') bgColor = '#2196f3';
+
+            notification.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background: ' + bgColor + '; color: white; padding: 12px 20px; border-radius: 10px; z-index: 2000; font-size: 14px;';
+            notification.innerHTML = message;
+            document.body.appendChild(notification);
+
+            setTimeout(function() {
+                if (notification && notification.remove) {
+                    notification.remove();
+                }
+            }, 3000);
+        }
+
+        loadCart();
         setInterval(updateTimer, 1000);
         updateTimer();
-
-        // Search function
-        function searchProducts() {
-            const searchTerm = document.getElementById('searchInput').value;
-            if (searchTerm) {
-                alert('Searching for: ' + searchTerm + '\n(Full search coming soon!)');
-            }
-        }
-
-        // Add to cart
-        document.querySelectorAll('.add-to-cart').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                alert('Item added to cart!');
-            });
-        });
-
-        // Product click
-        document.querySelectorAll('.product-card').forEach(card => {
-            card.addEventListener('click', function() {
-                alert('Product details coming soon!');
-            });
-        });
     </script>
 </body>
 </html>

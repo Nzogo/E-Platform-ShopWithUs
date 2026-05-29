@@ -1,6 +1,6 @@
 package com.ecommerce.service;
 
-import com.ecommerce.dao.UserDAO;
+import com.ecommerce.Dao.UserDAO;
 import com.ecommerce.model.User;
 
 public class UserService {
