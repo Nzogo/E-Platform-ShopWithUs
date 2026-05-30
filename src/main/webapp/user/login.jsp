@@ -637,7 +637,7 @@
                 </form>
 
                 <div class="register-link">
-                    New to ShopWithUs? <a href="register.jsp">Create an account <i class="fas fa-arrow-right"></i></a>
+                    New to ShopWithUs? <a href="${pageContext.request.contextPath}/user/register.jsp">Create an account <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
