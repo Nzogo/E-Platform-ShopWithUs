@@ -8,9 +8,12 @@ public class User {
     private String password;
     private String phone;
     private String address;
+    private String role;  // ADD THIS FIELD
 
     // Default constructor
-    public User() {}
+    public User() {
+        this.role = "user";
+    }
 
     // Constructor with basic fields
     public User(String fullname, String email, String nickname, String password, String phone, String address) {
@@ -20,6 +23,7 @@ public class User {
         this.password = password;
         this.phone = phone;
         this.address = address;
+        this.role = "user";
     }
 
     // Getters and Setters
@@ -43,4 +47,7 @@ public class User {
 
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 }

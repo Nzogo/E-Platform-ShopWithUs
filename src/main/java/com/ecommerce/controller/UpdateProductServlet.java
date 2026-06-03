@@ -15,13 +15,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
-@WebServlet("/admin/addProduct")
+@WebServlet("/admin/updateProduct")
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2,
         maxFileSize = 1024 * 1024 * 10,
         maxRequestSize = 1024 * 1024 * 50
 )
-public class AddProductServlet extends HttpServlet {
+public class UpdateProductServlet extends HttpServlet {
 
     private ProductDAO productDAO = new ProductDAO();
 
@@ -78,7 +78,14 @@ public class AddProductServlet extends HttpServlet {
             return;
         }
 
-        // Get form fields
+        int productId = Integer.parseInt(request.getParameter("id"));
+
+        Product existingProduct = productDAO.getProductById(productId);
+        if (existingProduct == null) {
+            response.sendRedirect(request.getContextPath() + "/admin/manage-products.jsp?error=Product not found");
+            return;
+        }
+
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         String priceStr = request.getParameter("price");
@@ -88,7 +95,6 @@ public class AddProductServlet extends HttpServlet {
         String stockStr = request.getParameter("stock");
         String status = request.getParameter("status");
 
-        // Handle file uploads
         Part image1Part = request.getPart("image1");
         Part image2Part = request.getPart("image2");
         Part image3Part = request.getPart("image3");
@@ -101,13 +107,15 @@ public class AddProductServlet extends HttpServlet {
         String image2Url = request.getParameter("image2_url");
         String image3Url = request.getParameter("image3_url");
 
-        String finalImage1 = image1Path != null ? image1Path : (image1Url != null && !image1Url.isEmpty() ? image1Url : null);
-        String finalImage2 = image2Path != null ? image2Path : (image2Url != null && !image2Url.isEmpty() ? image2Url : null);
-        String finalImage3 = image3Path != null ? image3Path : (image3Url != null && !image3Url.isEmpty() ? image3Url : null);
+        String finalImage1 = image1Path != null ? image1Path :
+                (image1Url != null && !image1Url.isEmpty() ? image1Url : existingProduct.getImage1());
+        String finalImage2 = image2Path != null ? image2Path :
+                (image2Url != null && !image2Url.isEmpty() ? image2Url : existingProduct.getImage2());
+        String finalImage3 = image3Path != null ? image3Path :
+                (image3Url != null && !image3Url.isEmpty() ? image3Url : existingProduct.getImage3());
 
-        // Validate
         if (name == null || name.trim().isEmpty()) {
-            response.sendRedirect(request.getContextPath() + "/admin/manage-products.jsp?error=Name required");
+            response.sendRedirect(request.getContextPath() + "/admin/edit-product.jsp?id=" + productId + "&error=Name required");
             return;
         }
 
@@ -121,11 +129,12 @@ public class AddProductServlet extends HttpServlet {
             }
             stock = Integer.parseInt(stockStr);
         } catch (NumberFormatException e) {
-            response.sendRedirect(request.getContextPath() + "/admin/manage-products.jsp?error=Invalid number format");
+            response.sendRedirect(request.getContextPath() + "/admin/edit-product.jsp?id=" + productId + "&error=Invalid number format");
             return;
         }
 
         Product product = new Product();
+        product.setId(productId);
         product.setName(name);
         product.setDescription(description);
         product.setPrice(price);
@@ -138,13 +147,12 @@ public class AddProductServlet extends HttpServlet {
         product.setImage2(finalImage2);
         product.setImage3(finalImage3);
 
-        boolean success = productDAO.addProduct(product);
+        boolean success = productDAO.updateProduct(product);
 
         if (success) {
-            // ✅ FIXED: Redirect to dashboard with success message
-            response.sendRedirect(request.getContextPath() + "/admin/manage-products.jsp?success=Product added successfully");
+            response.sendRedirect(request.getContextPath() + "/admin/manage-products.jsp?success=Product updated");
         } else {
-            response.sendRedirect(request.getContextPath() + "/admin/manage-products.jsp?error=Failed to add product");
+            response.sendRedirect(request.getContextPath() + "/admin/edit-product.jsp?id=" + productId + "&error=Update failed");
         }
     }
 }

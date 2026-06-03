@@ -39,6 +39,7 @@ public class LoginServlet extends HttpServlet {
         if (user != null) {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
+            session.setAttribute("userRole", user.getRole()); // Add role to session
             response.sendRedirect(request.getContextPath() + "/user/dashboard.jsp");
         } else {
             request.setAttribute("error", "Invalid email or password");

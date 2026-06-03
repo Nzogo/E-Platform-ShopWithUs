@@ -8,7 +8,7 @@ public class UserDAO {
 
     // Register new user
     public boolean registerUser(User user) {
-        String sql = "INSERT INTO users (fullname, email, nickname, password, phone, address) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users (fullname, email, nickname, password, phone, address, role) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -19,6 +19,7 @@ public class UserDAO {
             pstmt.setString(4, user.getPassword());
             pstmt.setString(5, user.getPhone());
             pstmt.setString(6, user.getAddress());
+            pstmt.setString(7, user.getRole() != null ? user.getRole() : "user");
 
             return pstmt.executeUpdate() > 0;
 
@@ -45,9 +46,9 @@ public class UserDAO {
         }
     }
 
-    // Login user
+    // Login user (includes role)
     public User loginUser(String email, String password) {
-        String sql = "SELECT id, fullname, email, nickname, phone, address FROM users WHERE email = ? AND password = ?";
+        String sql = "SELECT id, fullname, email, nickname, phone, address, role FROM users WHERE email = ? AND password = ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -64,6 +65,7 @@ public class UserDAO {
                 user.setNickname(rs.getString("nickname"));
                 user.setPhone(rs.getString("phone"));
                 user.setAddress(rs.getString("address"));
+                user.setRole(rs.getString("role")); // ADD THIS LINE
                 return user;
             }
 
@@ -74,9 +76,9 @@ public class UserDAO {
         return null;
     }
 
-    // Get user by email
+    // Get user by email (includes role)
     public User getUserByEmail(String email) {
-        String sql = "SELECT id, fullname, email, nickname, phone, address FROM users WHERE email = ?";
+        String sql = "SELECT id, fullname, email, nickname, phone, address, role FROM users WHERE email = ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -92,6 +94,7 @@ public class UserDAO {
                 user.setNickname(rs.getString("nickname"));
                 user.setPhone(rs.getString("phone"));
                 user.setAddress(rs.getString("address"));
+                user.setRole(rs.getString("role")); // ADD THIS LINE
                 return user;
             }
 
